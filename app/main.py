@@ -41,7 +41,7 @@ class Dictionary:
     def __getitem__(self, key: Any) -> Any:
         result_index = self._get_index(key)
         if self.table[result_index] is None:
-            raise KeyError("Key not found")
+            raise KeyError(f"Key {key} not found")
         if key == self.table[result_index][0]:
             return self.table[result_index][2]
         while (self.table[result_index] is not None and key
@@ -50,11 +50,15 @@ class Dictionary:
             if self.table[result_index] is not None:
                 if key == self.table[result_index][0]:
                     return self.table[result_index][2]
-        raise KeyError("Not found")
+        raise KeyError(f"Key {key} not found")
 
     def _load_factory(self) -> int | float:
         threshold = self.capacity * (2 / 3)
         return threshold
+
+    def __delitem__(self, key) -> None:
+        index_for_delete = self._get_index(key)
+        del self.table[index_for_delete]
 
     def _resize(self) -> None:
         threshold = self._load_factory()
