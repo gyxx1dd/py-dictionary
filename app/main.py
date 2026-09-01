@@ -19,7 +19,8 @@ class Dictionary:
             if key == self.table[index_of_key][0]:
                 self.table[index_of_key] = (key, key_hash, value)
                 return
-        self._resize()
+        if self.size == int(self.capacity * (2 / 3)):
+            self._resize()
         index_of_key = self._get_index(key)
         if self.table[index_of_key] is None:
             self.table[index_of_key] = (key, key_hash, value)
@@ -37,10 +38,10 @@ class Dictionary:
                         self.size += 1
                         return
 
-    def __getitem__(self, key: Any) -> KeyError | Any:
+    def __getitem__(self, key: Any) -> Any:
         result_index = self._get_index(key)
         if self.table[result_index] is None:
-            raise KeyError
+            raise KeyError("Key not found")
         if key == self.table[result_index][0]:
             return self.table[result_index][2]
         while (self.table[result_index] is not None and key
@@ -49,7 +50,7 @@ class Dictionary:
             if self.table[result_index] is not None:
                 if key == self.table[result_index][0]:
                     return self.table[result_index][2]
-        raise KeyError
+        raise KeyError("Not found")
 
     def _load_factory(self) -> int | float:
         threshold = self.capacity * (2 / 3)
@@ -77,5 +78,5 @@ class Dictionary:
                         self.table[index_now] = (key, key_hash, value)
             del old_table
 
-    def __len__(self) -> Any:
+    def __len__(self) -> int:
         return self.size
