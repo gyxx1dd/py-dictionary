@@ -56,7 +56,7 @@ class Dictionary:
         threshold = self.capacity * (2 / 3)
         return threshold
 
-    def __delitem__(self, key) -> None:
+    def __delitem__(self, key: Any) -> None:
         index_for_delete = self._get_index(key)
         del self.table[index_for_delete]
 
